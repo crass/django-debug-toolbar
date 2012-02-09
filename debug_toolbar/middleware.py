@@ -5,6 +5,8 @@ import imp
 import thread
 
 from django.conf import settings
+from django.conf.urls.defaults import include, patterns
+from django.core.urlresolvers import set_urlconf
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.utils.encoding import smart_unicode
@@ -127,10 +129,13 @@ class DebugToolbarMiddleware(object):
            response.get('Content-Type', '').split(';')[0] in _HTML_TYPES:
             for panel in toolbar.panels:
                 panel.process_response(request, response)
+            if getattr(request, 'urlconf', None):
+                set_urlconf(request.urlconf)
             response.content = replace_insensitive(
                 smart_unicode(response.content),
                 self.tag,
                 smart_unicode(toolbar.render_toolbar() + self.tag))
+            set_urlconf(None)
             if response.get('Content-Length', None):
                 response['Content-Length'] = len(response.content)
         del self.__class__.debug_toolbars[ident]
