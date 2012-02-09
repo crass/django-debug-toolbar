@@ -7,7 +7,7 @@ views in any other way is generally not advised.
 import os
 import django.views.static
 from django.conf import settings
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.utils import simplejson
 from django.utils.hashcompat import sha_constructor
@@ -188,6 +188,12 @@ def template_source(request):
     except (ImportError, AttributeError):  # Django 1.1 ...
         from django.template.loader import find_template_source
         source, origin = find_template_source(template_name)
+
+    # Allow downloading of template if 'download' GET arg is present.
+    if request.GET.get('download', None):
+        httpresp = HttpResponse(content=source, content_type="text/plain", )
+        httpresp["Content-Disposition"] = 'attachment; filename={}'.format(os.path.split(template_name)[-1])
+        return httpresp
 
     try:
         from pygments import highlight

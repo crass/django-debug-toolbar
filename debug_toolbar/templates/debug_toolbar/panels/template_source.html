@@ -4,6 +4,7 @@
 	<h3>{% trans 'Template Source' %}: <code>{{ template_name }}</code></h3>
 </div>
 <div class="djDebugPanelContent">
+	<strong><a class="toggleTemplate" href="/__debug__/template_source/?template={{ template_name }}&download=true">Download</a></strong>
 	<div class="scroll">
 		{% if not source.pygmentized %}
 			<code>{{ source }}</code>
