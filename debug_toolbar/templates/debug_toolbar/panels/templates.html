@@ -15,7 +15,7 @@
 <dl>
 {% for template in templates %}
 	<dt><strong><a class="remoteCall toggleTemplate" href="/__debug__/template_source/?template={{ template.template.name }}">{{ template.template.name|addslashes }}</a></strong>
-		<a class="toggleTemplate" href="/__debug__/template_source/?template={{ template_name }}&download=true">Download</a></dt>
+		<a class="toggleTemplate" href="/__debug__/template_source/?template={{ template.template.name }}&download=true">Download</a></dt>
 	<dd><samp>{{ template.template.origin_name|addslashes }}</samp></dd>
 	{% if template.context %}
 	<dd>
